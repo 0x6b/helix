@@ -496,7 +496,13 @@ fn is_word_boundary(a: char, b: char) -> bool {
 fn is_long_word_boundary(a: char, b: char) -> bool {
     match (categorize_char(a), categorize_char(b)) {
         (CharCategory::Word, CharCategory::Punctuation)
-        | (CharCategory::Punctuation, CharCategory::Word) => false,
+        | (CharCategory::Punctuation, CharCategory::Word)
+        | (CharCategory::Hiragana, CharCategory::Katakana)
+        | (CharCategory::Katakana, CharCategory::Hiragana)
+        | (CharCategory::Hiragana, CharCategory::Kanji)
+        | (CharCategory::Kanji, CharCategory::Hiragana)
+        | (CharCategory::Katakana, CharCategory::Kanji)
+        | (CharCategory::Kanji, CharCategory::Katakana) => false,
         (a, b) if a != b => true,
         _ => false,
     }
