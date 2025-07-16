@@ -36,7 +36,7 @@ pub fn setup(config: Arc<ArcSwap<Config>>) -> Handlers {
     let signature_hints = SignatureHelpHandler::new().spawn();
     let auto_save = AutoSaveHandler::new().spawn();
     let code_action_hint = code_action_hint::Handler::default().spawn();
-    let auto_read = AutoReloadHandler::new().spawn();
+    let auto_reload = AutoReloadHandler::new().spawn();
     let document_colors = DocumentColorsHandler::default().spawn();
     let document_links = DocumentLinksHandler::default().spawn();
     let word_index = word_index::Handler::spawn();
@@ -47,7 +47,7 @@ pub fn setup(config: Arc<ArcSwap<Config>>) -> Handlers {
         completions: helix_view::handlers::completion::CompletionHandler::new(event_tx),
         signature_hints,
         auto_save,
-        auto_reload: auto_read,
+        auto_reload,
         document_colors,
         document_links,
         word_index,
