@@ -98,6 +98,10 @@ libc = "0.2.186"
 
 [build-dependencies]
 helix-loader = { path = "../helix-loader" }
+flate2 = "1"
+sha2 = "0.11"
+tar = "0.4"
+toml.workspace = true
 
 [dev-dependencies]
 smallvec = "1.15"

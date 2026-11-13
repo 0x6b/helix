@@ -118,13 +118,13 @@ impl Config {
     }
 
     pub fn load_default() -> Result<Config, ConfigLoadError> {
-        let global_config =
-            fs::read_to_string(helix_loader::config_file()).map_err(ConfigLoadError::Error)?;
+        let global_config = crate::embedded::read_config(helix_loader::config_file())
+            .map_err(ConfigLoadError::Error)?;
         let local_config = fs::read_to_string(helix_loader::workspace_config_file())
             .map_err(ConfigLoadError::Error);
 
         let phony_config = ConfigLoadError::Error(IOError::other("hacky placeholder"));
-        let global_parsed = Config::load(Ok(&global_config), Err(phony_config))?;
+        let global_parsed = crate::embedded::load(Ok(&global_config), Err(phony_config))?;
 
         // We need to build a transient `WorkspaceTrust` just to ask whether the workspace is
         // trusted enough to load its `.helix/config.toml`. The persisted-trust file on disk is the
@@ -137,7 +137,7 @@ impl Config {
             .query_current(helix_loader::workspace_trust::TrustQuery::LocalConfig)
             .is_trusted()
         {
-            let mut merged = Config::load(Ok(&global_config), local_config)?;
+            let mut merged = crate::embedded::load(Ok(&global_config), local_config)?;
             // editor.workspace-trust is global/user-scope only. Without this override, a
             // workspace's `.helix/config.toml` could set `level = "insecure"`; once the user trusted
             // *that* workspace, refresh_config would re-load with the override merged in and from

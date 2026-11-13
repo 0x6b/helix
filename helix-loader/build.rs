@@ -2,11 +2,16 @@ use std::borrow::Cow;
 use std::path::Path;
 use std::process::Command;
 
+#[path = "build/embedded.rs"]
+mod embedded;
+
 const MAJOR: &str = env!("CARGO_PKG_VERSION_MAJOR");
 const MINOR: &str = env!("CARGO_PKG_VERSION_MINOR");
 const PATCH: &str = env!("CARGO_PKG_VERSION_PATCH");
 
 fn main() {
+    embedded::prepare();
+
     let git_hash = Command::new("git")
         .args(["rev-parse", "HEAD"])
         .output()

@@ -1,6 +1,9 @@
 pub mod config;
+pub mod embedded;
 pub mod grammar;
 pub mod workspace_trust;
+
+pub use embedded::initialize_runtime;
 
 use helix_stdx::{env::current_working_dir, path};
 
@@ -37,6 +40,8 @@ pub fn initialize_log_file(specified_file: Option<PathBuf>) {
 /// 3. `HELIX_RUNTIME` (if environment variable is set)
 /// 4. `HELIX_DEFAULT_RUNTIME` (if environment variable is set *at build time*)
 /// 5. subdirectory of path to helix executable (always included)
+/// 6. embedded profile themes (when initialized)
+/// 7. cached directory containing the embedded runtime (when initialized)
 ///
 /// Postcondition: returns at least two paths (they might not exist).
 fn prioritize_runtime_dirs() -> Vec<PathBuf> {
@@ -74,6 +79,7 @@ fn prioritize_runtime_dirs() -> Vec<PathBuf> {
         .and_then(|path| path.parent().map(|path| path.to_path_buf().join(RT_DIR)))
         .unwrap();
     rt_dirs.push(exe_rt_dir);
+    rt_dirs.extend(embedded::runtime_dirs());
     rt_dirs
 }
 

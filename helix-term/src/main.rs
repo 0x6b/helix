@@ -78,6 +78,13 @@ FLAGS:
         std::process::exit(0);
     }
 
+    // Reuse the bundled runtime in the user's cache across editor processes.
+    helix_loader::initialize_runtime(
+        include_bytes!(concat!(env!("OUT_DIR"), "/runtime.tar.gz")),
+        env!("HELIX_RUNTIME_HASH"),
+    )
+    .context("failed to unpack the embedded runtime")?;
+
     if args.health {
         if let Err(err) = helix_term::health::print_health(args.health_arg) {
             // Piping to for example `head -10` requires special handling:
@@ -87,7 +94,7 @@ FLAGS:
             }
         }
 
-        std::process::exit(0);
+        return Ok(0);
     }
 
     if args.fetch_grammars {

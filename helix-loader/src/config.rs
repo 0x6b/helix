@@ -32,7 +32,7 @@ pub fn user_lang_config(trust: &WorkspaceTrust) -> Result<toml::Value, toml::de:
         })
         .collect::<Result<Vec<_>, _>>()?
         .into_iter()
-        .fold(default_lang_config(), |a, b| {
+        .fold(crate::embedded::language_defaults()?, |a, b| {
             crate::merge_toml_values(a, b, 3)
         });
 

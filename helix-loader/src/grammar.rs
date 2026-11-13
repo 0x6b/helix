@@ -13,6 +13,8 @@ use std::{
 use tempfile::TempPath;
 use tree_house::tree_sitter::Grammar;
 
+pub mod embedded;
+
 #[cfg(target_os = "macos")]
 const DYLIB_EXTENSION: &str = "dylib";
 

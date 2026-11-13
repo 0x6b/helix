@@ -45,6 +45,8 @@ Note: Only certain languages have indentation definitions at the moment. Check
 
 # Installation
 
+This fork supports [standalone binaries and embedded configuration profiles](docs/standalone.md).
+
 [Installation documentation](https://docs.helix-editor.com/install.html).
 
 [![Packaging status](https://repology.org/badge/vertical-allrepos/helix-editor.svg?exclude_unsupported=1)](https://repology.org/project/helix-editor/versions)
